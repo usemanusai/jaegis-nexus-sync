@@ -1,0 +1,23 @@
+﻿ports:
+  rag: 33001
+  research: 33011
+  github_sync: 33031
+  web: 33021
+  maintenance: 33041
+secrets:
+  gh_sync_jwt: ""
+  api_key_rag: ""
+database:
+  type: postgres
+  host: localhost
+  port: 55432
+  user: nexus
+  pass: nexus
+  name: nexus_sync
+proxy:
+  enabled: true
+  tls: true
+  domain: 'jaegis.online'
+  email: 'use.manus.ai@gmail.com'
+
+
