@@ -1,4 +1,4 @@
-ports:
+﻿ports:
   rag: 33001
   research: 33011
   github_sync: 33031
