@@ -1,0 +1,44 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run -w packages/db-schema prisma:generate || true
+      - run: npm run -w packages/db-schema prisma:migrate || true
+      - run: npm run -w packages/rag-service build || true
+      - run: node packages/rag-service/dist/main.js &
+      - run: sleep 3 && node packages/rag-service/dist/worker.js &
+      - run: npm run -w packages/e2e build && node packages/e2e/dist/smoke.js
+
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint --if-present
+      - name: Build
+        run: npm run build --if-present
+      - name: Test
+        run: npm run test --if-present
+

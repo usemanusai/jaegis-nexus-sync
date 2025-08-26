@@ -1,0 +1,9 @@
+FROM node:22-alpine
+WORKDIR /app
+COPY package.json package-lock.json* .npmrc* ./
+COPY apps ./apps
+RUN npm install --no-audit --no-fund && npm --workspaces --if-present run build
+ENV WEB_PORT=33021
+EXPOSE 33021
+CMD ["npx","http-server","apps/web-ui/dist","-p","33021","-a","0.0.0.0"]
+

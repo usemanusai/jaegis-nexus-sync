@@ -1,0 +1,22 @@
+{
+  "name": "@nexus-sync/web-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 33021",
+    "build": "vite build",
+    "preview": "vite preview --port 33022"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "cross-fetch": "^4.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.1",
+    "typescript": "^5.5.4",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0"
+  }
+}

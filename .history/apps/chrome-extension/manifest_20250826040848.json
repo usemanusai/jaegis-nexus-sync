@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "NexusSync Chat Sync",
+  "version": "0.1.0",
+  "description": "Sync chats from Gemini and chat.z.ai to NexusSync RAG",
+  "action": {
+    "default_title": "NexusSync",
+    "default_popup": "src/popup/index.html"
+  },
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "options_page": "src/options/index.html",
+  "permissions": ["storage", "alarms", "scripting", "tabs", "downloads", "bookmarks", "history"],
+  "host_permissions": [
+    "https://gemini.google.com/*",
+    "https://chat.z.ai/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "js": ["src/content/gemini.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://chat.z.ai/*"],
+      "js": ["src/content/chatzai.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
+

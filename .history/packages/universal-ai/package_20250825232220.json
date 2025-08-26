@@ -1,0 +1,10 @@
+{
+  "name": "@nexus-sync/universal-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'TBD'",
+    "lint": "echo 'TBD'",
+    "test": "echo 'TBD'"
+  }
+}

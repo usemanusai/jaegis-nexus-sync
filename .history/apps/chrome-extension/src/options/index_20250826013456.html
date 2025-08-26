@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+  <head><meta charset="UTF-8"><title>NexusSync Options</title></head>
+  <body>
+    <label>RAG Ingest URL <input id="u" style="width:360px" value="http://localhost:33001/api/v1/ingest"/></label>
+    <button id="save">Save</button>
+    <script type="module">
+      const u = document.getElementById('u');
+      const saved = await chrome.storage.local.get(['RAG_INGEST']);
+      if (saved.RAG_INGEST) u.value = saved.RAG_INGEST;
+      document.getElementById('save').addEventListener('click', async ()=>{
+        await chrome.storage.local.set({ RAG_INGEST: u.value });
+        alert('Saved');
+      });
+    </script>
+  </body>
+</html>
+

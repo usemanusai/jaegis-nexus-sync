@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head><meta charset="UTF-8"/><title>DSL Editor</title></head>
+  <body>
+    <h3>DSL Editor</h3>
+    <link rel="stylesheet" href="dsl.css"/>
+
+    <div id="toolbar">
+      <select id="add-step">
+        <option value="navigate">navigate</option>
+        <option value="wait">wait</option>
+        <option value="click">click</option>
+        <option value="type">type</option>
+        <option value="submit">submit</option>
+        <option value="extract">extract</option>
+        <option value="rag_ingest">rag_ingest</option>
+      </select>
+      <button id="add">Add Step</button>
+      <select id="templates"><option value="">(templates)</option></select>
+      <button id="use-template">Use</button>
+      <input type="file" id="import-file"/>
+      <button id="export">Export</button>
+    </div>
+    <div id="steps"></div>
+    <textarea id="dsl-json" style="width:540px;height:200px"></textarea>
+    <div>
+      <button id="validate">Validate</button>
+      <button id="run">Run on Active Tab</button>
+    </div>
+    <pre id="out" style="background:#111;padding:8px"></pre>
+    <script type="module">
+      import { initDslBuilder } from './dsl.js'
+      initDslBuilder()
+    </script>
+  </body>
+</html>
+

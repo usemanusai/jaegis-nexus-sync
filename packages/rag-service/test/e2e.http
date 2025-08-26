@@ -1,0 +1,17 @@
+### Ingest
+POST http://localhost:33001/api/v1/ingest
+Content-Type: application/json
+
+{
+  "source": "test://local",
+  "content": "hello world"
+}
+
+### Query
+POST http://localhost:33001/api/v1/query
+Content-Type: application/json
+
+{
+  "query": "hello"
+}
+

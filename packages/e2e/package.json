@@ -1,0 +1,17 @@
+{
+  "name": "@nexus-sync/e2e",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node dist/smoke.js",
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "@types/node": "^20.14.2"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

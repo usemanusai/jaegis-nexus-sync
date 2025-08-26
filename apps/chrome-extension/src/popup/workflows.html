@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head><meta charset="UTF-8"/><title>NexusSync Workflows</title></head>
+  <body>
+    <h3>Workflow Templates</h3>
+    <select id="wf">
+      <option value="fillLogin">Fill login form</option>
+      <option value="searchDocs">Search docs and capture</option>
+    </select>
+    <button id="run">Run</button>
+    <script type="module">
+      const AGI = async ()=> (await chrome.storage.local.get(['AGI_MODE'])).AGI_MODE
+      async function ensureAgi(){ if (!(await AGI())) { alert('Enable AGI Mode in Options.'); throw new Error('AGI off') } }
+      const codeMap = {
+        fillLogin: `(()=>{ const u=document.querySelector('input[type=email],input[name=username]'); const p=document.querySelector('input[type=password]'); if(u) u.value='user@example.com'; if(p) p.value='password123'; const f=u?.form||p?.form; f?.dispatchEvent(new Event('submit',{bubbles:true})) })();`,
+        searchDocs: `(()=>{ const box=document.querySelector('input[type=search],input[name=q]'); if(box){ box.value='NexusSync docs'; box.form?.dispatchEvent(new Event('submit',{bubbles:true})) } })();`
+      }
+      document.getElementById('run').addEventListener('click', async ()=>{
+        try {
+          await ensureAgi()
+          const [tab] = await chrome.tabs.query({active:true,currentWindow:true})
+          const code = codeMap[document.getElementById('wf').value]
+          const r = await chrome.runtime.sendMessage({ type: 'AGI_EXEC', tabId: tab.id, code })
+          alert(r.ok ? 'Workflow executed' : 'Failed: '+(r.error||''))
+        } catch (e) {}
+      })
+    </script>
+  </body>
+</html>
+

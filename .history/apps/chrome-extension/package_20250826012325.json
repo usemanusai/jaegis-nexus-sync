@@ -1,0 +1,14 @@
+{
+  "name": "@nexus-sync/chrome-extension",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf dist && mkdir dist",
+    "build": "node build.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0",
+    "rimraf": "^5.0.10"
+  }
+}

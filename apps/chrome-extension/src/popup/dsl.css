@@ -1,0 +1,9 @@
+body{font-family:system-ui,Segoe UI,Arial,sans-serif;background:#0b0b0b;color:#eee;padding:12px}
+textarea{background:#111;color:#cfc;border:1px solid #333;border-radius:6px;padding:8px}
+.row{display:flex;gap:8px;align-items:flex-start;background:#111;padding:8px;margin:6px 0;border-radius:6px}
+.row select,.row input,button{background:#1a1a1a;color:#eee;border:1px solid #333;border-radius:4px;padding:4px}
+.fields{display:flex;gap:6px;align-items:center}
+#steps{margin:8px 0}
+#toolbar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+#out{white-space:pre-wrap}
+

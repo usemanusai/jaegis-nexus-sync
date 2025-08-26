@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head><meta charset="UTF-8"><title>NexusSync AGI Mode</title></head>
+  <body>
+    <label><input type="checkbox" id="agi"/> Enable AGI Mode</label>
+    <div class="hint">AGI Mode allows advanced automation and browser control.</div>
+    <script type="module">
+      const box = document.getElementById('agi')
+      const saved = await chrome.storage.local.get(['AGI_MODE'])
+      box.checked = !!saved.AGI_MODE
+      box.addEventListener('change', async ()=>{
+        await chrome.storage.local.set({ AGI_MODE: box.checked })
+      })
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,51 @@
+// Prisma schema for NexusSync
+// PostgreSQL 16 with pgvector extension
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id          String    @id @default(cuid())
+  source      String
+  sourceId    String?
+  title       String?
+  content     String
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  relationsFrom Relationship[] @relation("FromDoc")
+  relationsTo   Relationship[] @relation("ToDoc")
+  embeddings Embedding[]
+  @@index([source, sourceId])
+}
+
+model Relationship {
+  id        String   @id @default(cuid())
+  fromId    String
+  toId      String
+  type      String
+  metadata  Json?
+  createdAt DateTime @default(now())
+  from      Document @relation("FromDoc", fields: [fromId], references: [id])
+  to        Document @relation("ToDoc", fields: [toId], references: [id])
+}
+
+model Embedding {
+  id         String   @id @default(cuid())
+  documentId String
+  // Keep array version for ORM convenience
+  vector     Float[]
+  // Native pgvector column for DB-side similarity search
+  vectorPg   Unsupported("vector")?
+  model      String
+  dim        Int
+  createdAt  DateTime @default(now())
+  document   Document @relation(fields: [documentId], references: [id])
+}
+

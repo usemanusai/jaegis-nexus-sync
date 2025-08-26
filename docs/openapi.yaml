@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+  title: JAEGIS NexusSync API
+  version: 0.1.0
+servers:
+  - url: http://localhost:33001/api/v1
+    description: RAG Service
+  - url: http://localhost:33041/api/v1
+    description: Maintenance Service
+  - url: http://localhost:33011/api/v1
+    description: Research Backend
+paths:
+  /ingest:
+    post:
+      summary: Ingest a document into RAG
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source:
+                  type: string
+                content:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /query:
+    post:
+      summary: Query RAG
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /audit/run:
+    post:
+      summary: Run maintenance audit now
+      servers:
+        - url: http://localhost:33041/api/v1
+      responses:
+        '200':
+          description: OK
+  /audit/status:
+    get:
+      summary: Get maintenance audit status
+      servers:
+        - url: http://localhost:33041/api/v1
+      responses:
+        '200':
+          description: OK
+  /deps:
+    get:
+      summary: List dependencies (vulnerable first)
+      servers:
+        - url: http://localhost:33041/api/v1
+      parameters:
+        - in: query
+          name: vulnerableOnly
+          schema: { type: string, enum: ["true","false"] }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 50 }
+      responses:
+        '200':
+          description: OK
+  /research:
+    post:
+      summary: Enqueue a research job
+      servers:
+        - url: http://localhost:33011/api/v1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+      responses:
+        '200':
+          description: OK
+

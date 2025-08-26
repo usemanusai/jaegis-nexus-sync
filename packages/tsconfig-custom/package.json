@@ -1,0 +1,6 @@
+{
+  "name": "@nexus-sync/tsconfig-custom",
+  "version": "0.1.0",
+  "private": true,
+  "types": "tsconfig.json"
+}

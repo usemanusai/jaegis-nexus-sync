@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head><meta charset="UTF-8"><title>NexusSync AGI Mode</title></head>
+  <body>
+    <label><input type="checkbox" id="agi"/> Enable AGI Mode</label>
+    <div class="hint">AGI Mode allows advanced automation and browser control.</div>
+    <div style="margin-top:10px">
+      <label>Allowlist (one host per line):</label><br/>
+      <textarea id="allow" style="width:360px;height:120px" placeholder="example.com\napp.example.org"></textarea>
+    </div>
+    <button id="save">Save</button>
+    <script type="module">
+      const box = document.getElementById('agi')
+      const allow = document.getElementById('allow')
+      const saved = await chrome.storage.local.get(['AGI_MODE','AGI_ALLOWLIST'])
+      box.checked = !!saved.AGI_MODE
+      allow.value = (saved.AGI_ALLOWLIST||[]).join('\n')
+      box.addEventListener('change', async ()=>{
+        await chrome.storage.local.set({ AGI_MODE: box.checked })
+      })
+      document.getElementById('save').addEventListener('click', async ()=>{
+        const hosts = allow.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean)
+        await chrome.storage.local.set({ AGI_ALLOWLIST: hosts })
+        alert('Saved')
+      })
+    </script>
+  </body>
+</html>
+

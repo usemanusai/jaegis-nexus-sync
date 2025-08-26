@@ -1,0 +1,32 @@
+name: ci-compose
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  compose-up:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build images
+        run: |
+          docker build -f Dockerfile.rag -t nexus/rag:ci .
+          docker build -f Dockerfile.github-sync -t nexus/github-sync:ci .
+          docker build -f Dockerfile.research -t nexus/research:ci .
+          docker build -f Dockerfile.maintenance -t nexus/maintenance:ci .
+          docker build -f Dockerfile.web -t nexus/web:ci .
+      - name: Start stack
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
+      - name: Health checks
+        run: |
+          sleep 10
+          curl -f http://localhost:33041/api/v1/health || (docker ps -a && docker logs nexus-maintenance && exit 1)
+      - name: Teardown
+        if: always()
+        run: |
+          docker compose -f docker-compose.yml -f docker-compose.override.yml down -v
+

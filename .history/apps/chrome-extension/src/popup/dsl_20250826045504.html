@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+  <head><meta charset="UTF-8"/><title>DSL Editor</title></head>
+  <body>
+    <h3>DSL Editor</h3>
+    <link rel="stylesheet" href="dsl.css"/>
+
+    <textarea id="dsl" style="width:480px;height:220px" placeholder='{"steps":[{"type":"navigate","url":"https://example.com"},{"type":"wait","ms":1000}]}'></textarea>
+    <div>
+      <button id="validate">Validate</button>
+      <button id="run">Run on Active Tab</button>
+    </div>
+    <pre id="out" style="background:#111;padding:8px"></pre>
+    <script type="module">
+      function parse(){ try { return JSON.parse(document.getElementById('dsl').value) } catch { return null } }
+      document.getElementById('validate').addEventListener('click', async ()=>{
+        const dsl = parse()
+        const r = await chrome.runtime.sendMessage({ type: 'AGI_VALIDATE_DSL', dsl })
+        document.getElementById('out').textContent = JSON.stringify(r, null, 2)
+      })
+      document.getElementById('run').addEventListener('click', async ()=>{
+        const dsl = parse()
+        const [tab] = await chrome.tabs.query({active:true,currentWindow:true})
+        const r = await chrome.runtime.sendMessage({ type: 'AGI_RUN_DSL', tabId: tab.id, dsl })
+        document.getElementById('out').textContent = JSON.stringify(r, null, 2)
+      })
+    </script>
+  </body>
+</html>
+

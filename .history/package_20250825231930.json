@@ -1,0 +1,28 @@
+{
+  "name": "nexus-sync",
+  "private": true,
+  "version": "0.1.0",
+  "description": "NexusSync monorepo (Turborepo)",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "workspaces": [
+    "apps/chrome-extension",
+    "apps/web-ui",
+    "packages/rag-service",
+    "packages/github-sync",
+    "packages/universal-ai",
+    "packages/db-schema",
+    "packages/eslint-config-custom",
+    "packages/tsconfig-custom"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.5"
+  }
+}

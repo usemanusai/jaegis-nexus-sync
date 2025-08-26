@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>NexusSync Install Report</title>
+<style>body{font-family:system-ui,Segoe UI,Arial;margin:20px}pre{background:#111;color:#eee;padding:12px;border-radius:8px}code{color:#5cf}</style>
+</head>
+<body>
+<h1>NexusSync Installation Report</h1>
+<p>Generated: {{.Now}}</p>
+<h2>Endpoints</h2>
+<ul>
+  <li>RAG: <a href="http://localhost:33001/api/v1/health">/api/v1/health</a></li>
+  <li>Research: <a href="http://localhost:33011/api/v1/health">/api/v1/health</a></li>
+  <li>GitHub Sync: <a href="http://localhost:33031/health">/health</a></li>
+  <li>Maintenance: <a href="http://localhost:33041/api/v1/health">/api/v1/health</a></li>
+  <li>Web UI: <a href="http://localhost:33021">/</a></li>
+  <li>Proxy UI: <a href="http://localhost:8080">:8080</a></li>
+</ul>
+<h2>Credentials/Keys</h2>
+<pre>
+GH_SYNC_JWT_SECRET: {{.JWT}}
+RAG_API_KEY: {{.RAG}}
+</pre>
+<h2>Next Steps</h2>
+<ol>
+  <li>Load the Chrome extension (apps/chrome-extension) via chrome://extensions (Developer Mode > Load unpacked) or your browser’s extension loader.</li>
+  <li>Open Web UI and run a maintenance audit to see PR automation and vulnerabilities.</li>
+  <li>Try the DSL workflows (new tab override) to execute simple automations.</li>
+</ol>
+</body>
+</html>
+

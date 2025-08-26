@@ -1,0 +1,36 @@
+name: release-installer
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Build installer (Linux)
+        run: |
+          cd tools/genesis-installer
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o genesis-installer-linux-amd64
+      - name: Build installer (Windows)
+        run: |
+          cd tools/genesis-installer
+          GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o genesis-installer-windows-amd64.exe
+      - name: Build installer (macOS)
+        run: |
+          cd tools/genesis-installer
+          GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -o genesis-installer-darwin-arm64
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            tools/genesis-installer/genesis-installer-linux-amd64
+            tools/genesis-installer/genesis-installer-windows-amd64.exe
+            tools/genesis-installer/genesis-installer-darwin-arm64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

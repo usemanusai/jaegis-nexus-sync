@@ -1,0 +1,68 @@
+version: "3.9"
+services:
+  rag:
+    build:
+      context: .
+      dockerfile: Dockerfile.rag
+    container_name: nexus-rag
+    environment:
+      PORT: 33001
+    ports:
+      - "33001:33001"
+    depends_on:
+      - db
+      - redis
+  github-sync:
+    build:
+      context: .
+      dockerfile: Dockerfile.github-sync
+    container_name: nexus-github-sync
+    env_file:
+      - .env.github-sync
+    ports:
+      - "33031:33031"
+    depends_on:
+      - db
+  research:
+    build:
+      context: .
+      dockerfile: Dockerfile.research
+    container_name: nexus-research
+    env_file:
+      - .env.research
+    ports:
+      - "33011:33011"
+    depends_on:
+      - redis
+  web-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: nexus-web
+    environment:
+      WEB_PORT: 33021
+    ports:
+      - "33021:33021"
+    depends_on:
+      - rag
+      - github-sync
+      - maintenance
+  proxy:
+    image: traefik:v3.1
+    container_name: nexus-proxy
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+    ports:
+      - "8080:8080"
+      - "80:80"
+    depends_on:
+      - rag
+      - github-sync
+      - research
+      - web-ui
+      - maintenance
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
